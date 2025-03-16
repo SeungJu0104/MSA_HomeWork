@@ -15,9 +15,10 @@ public class VM {
 	public static String selectPrint() {
 		System.out.println();
 		System.out.println("-------------------------------------");
-		System.out.println("0 - 4 중 과자를 하나 선택해주세요. (자판기 종료 : 5)");
+		System.out.println("0 - 4 중 과자를 하나 선택해주세요.");
+		System.out.println("(5 : 재고 추가, 6: 금액 변경 7: 재고 현황 8: 자판기 종료)");
 		System.out.print("종류 > ");
-		return (scn.nextLine()).trim();	
+		return scn.nextLine().trim();
 	}
 	
 	// 개수 선택
@@ -43,11 +44,12 @@ public class VM {
 	// 음수 또는 0은 -1을 리턴시켜서 숫자 재입력 출력문 처리
 	public static int exception(String val) {
 		int cnt = -1;
+
 		try { 
-			if(Integer.parseInt(val) > 0) cnt = Integer.parseInt(val);
+			if(Integer.parseInt(val) >= 0) cnt = Integer.parseInt(val);
 		} catch(Exception e) {
 			System.out.println("숫자를 다시 입력해주세요.");
-		}	
+		}
 		return cnt;
 	}
 	
@@ -74,6 +76,20 @@ public class VM {
 			}
 		} else System.out.println("숫자를 입력해주세요.");
 	}
+	
+	private static void vmAdminProgram(String tmp, VMDTO vDto) {
+		if("5".equals(tmp)) {
+			int sel = VM.exception(VM.selectPrint());
+			if(sel < vmList.size()) vDto.addStock(sel, VM.cntPrint(), vmList);
+			else System.out.println("잘못된 상품 번호를 입력하셨습니다.");	
+		}
+		else if("6".equals(tmp)) {
+			int sel = VM.exception(VM.selectPrint());
+			if(sel < vmList.size()) vDto.changePrice(sel, VM.insertCash(), vmList);
+			else System.out.println("잘못된 상품 번호를 입력하셨습니다.");
+		}
+		
+	}
 
 	public static void main(String[] args) {
 
@@ -90,10 +106,16 @@ public class VM {
 		while(run) {
 			String tmp = VM.selectPrint();
 			switch(tmp) {
-				case "0", "1", "2", "3", "4" -> {
+				case "0","1","2","3","4" -> {
 					VM.vmProgram(tmp, vDto);
 				}
-				case "5" -> {
+				case "5", "6" -> {
+					VM.vmAdminProgram(tmp, vDto);	
+				}
+				case "7" -> {
+					vDto.getStockList(VM.getVmList());
+				}
+				case "8" -> {
 					System.out.println("자판기 종료");
 					break program;
 				}
