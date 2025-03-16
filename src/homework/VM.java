@@ -86,10 +86,6 @@ public class VM {
 				new VMDTO(5000, 30))
 		);
 		
-//		for(VMDTO dto : vmList) {
-//			System.out.println(dto.getPrice() + " | " + dto.getStock());
-//		}
-		
 		program:
 		while(run) {
 			String tmp = VM.selectPrint();
@@ -104,5 +100,6 @@ public class VM {
 				default -> System.out.println("잘못된 상품 번호를 입력하셨습니다."); // default로 selectPrint 예외까지 처리
 			}
 		}		
+	scn.close();
 	}
 }
